@@ -8,6 +8,12 @@
 </head>
 <body>
     <template id="test-component" data-dome-component="true">
+        <style>
+            * {
+                color: red;
+            }
+        </style>
+
         <h1>I'm the test component</h1>
         <slot name="test-slot">My default text</slot>
     </template>
@@ -25,6 +31,10 @@
         <main>
             <slot name="main-slot">Main slot</slot>
         </main>
+
+        <script>
+            alert("I (the layout component) have been attached to the DOM!")
+        </script>
     </template>
 
     <script>
