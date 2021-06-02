@@ -30,25 +30,22 @@
     <script>
         function DOMeBuilder(componentObj, parents) {
             // recursively parse DOMeTree, adding current component to parents argument
-            let children = componentObj.children.map(childObj => childObj ? DOMeBuilder(childObj, [...parents, componentObj]) : undefined)
+            const children = componentObj.children.map(childObj => childObj ? DOMeBuilder(childObj, [...parents, componentObj]) : undefined)
 
             // create node (if doesn't already exist) and append children from previous iterations
-            let nodeEval = document.evaluate(`/${parents.map(parent => parent.tag).join("/")}/${componentObj.tag}`, document, null, XPathResult.ANY_TYPE, null)
+            const nodePath = `/${parents.map(parent => parent.tag).join("/")}/${componentObj.tag}`
+            console.log(nodePath)
+
+            let nodeEval = document.evaluate(nodePath, document, null, XPathResult.ANY_TYPE, null)
+            nodeEvalResult.iterateNext()
             console.log(componentObj)
-            console.log(nodeEval)
+            console.log(nodeEvalResult)
 
             let node = document.createElement(componentObj.tag)
             children.forEach(childObj => node.appendChild(childObj))
 
             // this is crucial for the recursion process but nice to have in general too ^^
             return node
-        }
-
-        function DOMeCreate(componentObj, parents) {
-
-            parents.forEach(parent => {
-
-            })
         }
 
         function DOMeSetupComponents() {
