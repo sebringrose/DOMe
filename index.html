@@ -50,7 +50,7 @@
                 )
             })
 
-            let pageJSON = fetch("/index.json")
+            let pageJSON = await fetch("/index.json").then(res => res.json())
             console.log(pageJSON)
         }
 
