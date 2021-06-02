@@ -37,7 +37,7 @@
             console.log(nodePath)
 
             let nodeEval = document.evaluate(nodePath, document, null, XPathResult.ANY_TYPE, null)
-            nodeEvalResult.iterateNext()
+            nodeEvalResult = nodeEval.iterateNext()
             console.log(componentObj)
             console.log(nodeEvalResult)
 
