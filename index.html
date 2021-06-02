@@ -8,12 +8,6 @@
 </head>
 <body>
     <template id="test-component" data-dome-component="true">
-        <style>
-            * {
-                color: red;
-            }
-        </style>
-
         <h1>I'm the test component</h1>
         <slot name="test-slot">My default text</slot>
     </template>
@@ -25,6 +19,12 @@
     </template>
 
     <template id="layout-component" data-dome-component="true">
+        <style>
+            * {
+                color: red;
+            }
+        </style>
+
         <header>
             <slot name="header-slot">Header slot</slot>
         </header>
