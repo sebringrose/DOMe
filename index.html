@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <template id="test-component" data-dome-component="true">
+        <h1>I'm the test component</h1>
+        <p><slot name="test-slot">My default text</slot></p>
+    </template>
+
+    <template id="nav-component" data-dome-component="true">
+        <nav>
+            <slot name="nav-links">No nav links provided....</slot>
+        </nav>
+    </template>
+
+    <template id="layout-component" data-dome-component="true">
+        <header>
+            <slot name="header-slot">Header slot</slot>
+        </header>
+        <main>
+            <slot name="main-slot">Main slot</slot>
+        </main>
+    </template>
+
+    <script>
+        async function DOMe() {
+            const domeComponents = Array.from(document.getElementsByTagName("template"))
+                .filter(el => {
+                    const dataset = JSON.parse(JSON.stringify(el.dataset))
+                    return dataset.domeComponent === "true"
+                })
+
+            domeComponents.forEach(component => {
+                customElements.define(component.id,
+                    class extends HTMLElement {
+                        constructor() {
+                        super();
+                        let template = document.getElementById(component.id);
+                        let templateContent = template.content;
+
+                        const shadowRoot = this.attachShadow({mode: 'open'})
+                            .appendChild(templateContent.cloneNode(true));
+                        }
+                    }
+                )
+            })
+
+            let pageJSON = fetch("/index.json")
+            console.log(pageJSON)
+        }
+
+        DOMe()
+    </script>
+</body>
+</html>

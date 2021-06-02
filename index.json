@@ -1,0 +1,23 @@
+{
+    "tag": "html",
+    "children": [
+        { 
+            "tag": "body",
+            "children": [
+                {
+                    "tag": "layout-component",
+                    "children": [
+                        {
+                            "tag": "nav-component",
+                            "slot": "header-slot"
+                        },
+                        {
+                            "tag": "test-component",
+                            "slot": "main-slot"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
