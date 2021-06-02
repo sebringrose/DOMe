@@ -32,14 +32,14 @@
             // recursively parse DOMeTree, adding current component to parents argument
             const children = componentObj.children.map(childObj => childObj ? DOMeBuilder(childObj, [...parents, componentObj]) : undefined)
 
-            // evaluate if node exists in DOM to avoid creating duplicates
+            // evaluate if node exists in DOM and retrieve if so (avoid creating duplicates of root elements or all elements in page hydration)
             const nodePath = `/${parents.map(parent => parent.tag).join("/")}/${componentObj.tag}`
             const nodeEval = document.evaluate(nodePath, document, null, XPathResult.ANY_TYPE, null)
 
-            // create node if necessary and append children
+            // create node if necessary, check/update attributes and append children
             let node = nodeEval.iterateNext()
             if (!node) node = document.createElement(componentObj.tag)
-
+            Object.keys(componentObj.attributes).forEach(attribute => node[attribute] = componentObj.attributes[attribute])
             children.forEach(childObj => node.appendChild(childObj))
 
             // this is crucial for the recursion process but nice to have in general too ^^

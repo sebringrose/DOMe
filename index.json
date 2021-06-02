@@ -1,24 +1,30 @@
 
 { 
     "tag": "html",
-    "slot": null,
+    "attributes": {
+        "lang": "en"
+    },
     "children": [
         { 
             "tag": "body",
-            "slot": null,
+            "attributes": {},
             "children": [
                 {
                     "tag": "layout-component",
-                    "slot": null,
+                    "attributes": {},
                     "children": [
                         {
                             "tag": "nav-component",
-                            "slot": "header-slot",
+                            "attributes": {
+                                "slot": "header-slot"
+                            },
                             "children": []
                         },
                         {
                             "tag": "test-component",
-                            "slot": "main-slot",
+                            "attributes": {
+                                "slot": "main-slot"
+                            },
                             "children": []
                         }
                     ]
