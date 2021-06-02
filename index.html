@@ -9,12 +9,12 @@
 <body>
     <template id="test-component" data-dome-component="true">
         <h1>I'm the test component</h1>
-        <p><slot name="test-slot">My default text</slot></p>
+        <slot name="test-slot">My default text</slot>
     </template>
 
     <template id="nav-component" data-dome-component="true">
         <nav>
-            <slot name="nav-links">No nav links provided....</slot>
+            <slot name="nav-links-slot">No nav links provided....</slot>
         </nav>
     </template>
 
@@ -47,12 +47,14 @@
         }
 
         function DOMeSetupComponents() {
+            // get all DOMe component templates from HTML
             const domeComponents = Array.from(document.getElementsByTagName("template"))
                 .filter(el => {
                     const dataset = JSON.parse(JSON.stringify(el.dataset))
                     return dataset.domeComponent === "true"
                 })
 
+            // create custom element for each component using shadow DOM
             domeComponents.forEach(component => {
                 customElements.define(component.id,
                     class extends HTMLElement {

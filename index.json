@@ -25,7 +25,16 @@
                             "attributes": {
                                 "slot": "main-slot"
                             },
-                            "children": []
+                            "children": [
+                                {
+                                    "tagName": "P",
+                                    "attributes": {
+                                        "slot": "test-slot",
+                                        "textContent": "Poopy McPoopy!"
+                                    },
+                                    "children": []
+                                }
+                            ]
                         }
                     ]
                 }
