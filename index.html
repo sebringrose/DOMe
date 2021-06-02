@@ -73,7 +73,7 @@
                         let template = document.getElementById(component.id);
                         let templateContent = template.content;
 
-                        const shadowRoot = this.attachShadow({mode: 'open'})
+                        const shadowRoot = this.attachShadow({mode: 'closed'})
                             .appendChild(templateContent.cloneNode(true));
                         }
                     }
