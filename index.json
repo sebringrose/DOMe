@@ -1,19 +1,25 @@
-{
+
+{ 
     "tag": "html",
+    "slot": null,
     "children": [
         { 
             "tag": "body",
+            "slot": null,
             "children": [
                 {
                     "tag": "layout-component",
+                    "slot": null,
                     "children": [
                         {
                             "tag": "nav-component",
-                            "slot": "header-slot"
+                            "slot": "header-slot",
+                            "children": []
                         },
                         {
                             "tag": "test-component",
-                            "slot": "main-slot"
+                            "slot": "main-slot",
+                            "children": []
                         }
                     ]
                 }

@@ -28,7 +28,30 @@
     </template>
 
     <script>
-        async function DOMe() {
+        function DOMeBuilder(componentObj, parents) {
+            // recursively parse DOMeTree, adding current component to parents argument
+            let children = componentObj.children.map(childObj => childObj ? DOMeBuilder(childObj, [...parents, componentObj]) : undefined)
+
+            // create node (if doesn't already exist) and append children from previous iterations
+            let nodeEval = document.evaluate(`/${parents.map(parent => parent.tag).join("/")}`, document, null, XPathResult.ANY_TYPE, null)
+            console.log(componentObj)
+            console.log(nodeEval)
+
+            let node = document.createElement(componentObj.tag)
+            children.forEach(childObj => node.appendChild(childObj))
+
+            // this is crucial for the recursion process but nice to have in general too ^^
+            return node
+        }
+
+        function DOMeCreate(componentObj, parents) {
+
+            parents.forEach(parent => {
+
+            })
+        }
+
+        function DOMeSetupComponents() {
             const domeComponents = Array.from(document.getElementsByTagName("template"))
                 .filter(el => {
                     const dataset = JSON.parse(JSON.stringify(el.dataset))
@@ -49,12 +72,16 @@
                     }
                 )
             })
-
-            let pageJSON = await fetch("/index.json").then(res => res.json())
-            console.log(pageJSON)
         }
 
-        DOMe()
+        async function DOMe(domeFilePath) {
+            DOMeSetupComponents()
+
+            let pageJSON = await fetch(domeFilePath).then(res => res.json())
+            DOMeBuilder(pageJSON)
+        }
+
+        DOMe("/index.json")
     </script>
 </body>
 </html>
