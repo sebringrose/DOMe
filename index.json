@@ -1,27 +1,27 @@
 
 { 
-    "tag": "html",
+    "tagName": "HTML",
     "attributes": {
         "lang": "en"
     },
     "children": [
         { 
-            "tag": "body",
+            "tagName": "BODY",
             "attributes": {},
             "children": [
                 {
-                    "tag": "layout-component",
+                    "tagName": "LAYOUT-COMPONENT",
                     "attributes": {},
                     "children": [
                         {
-                            "tag": "nav-component",
+                            "tagName": "NAV-COMPONENT",
                             "attributes": {
                                 "slot": "header-slot"
                             },
                             "children": []
                         },
                         {
-                            "tag": "test-component",
+                            "tagName": "TEST-COMPONENT",
                             "attributes": {
                                 "slot": "main-slot"
                             },

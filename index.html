@@ -33,12 +33,12 @@
             const children = componentObj.children.map(childObj => childObj ? DOMeBuilder(childObj, [...parents, componentObj]) : undefined)
 
             // evaluate if node exists in DOM and retrieve if so (avoid creating duplicates of root elements or all elements in page hydration)
-            const nodePath = `/${parents.map(parent => parent.tag).join("/")}/${componentObj.tag}`
+            const nodePath = `/${parents.map(parent => parent.tagName).join("/")}/${componentObj.tagName}`
             const nodeEval = document.evaluate(nodePath, document, null, XPathResult.ANY_TYPE, null)
 
             // create node if necessary, check/update attributes and append children
             let node = nodeEval.iterateNext()
-            if (!node) node = document.createElement(componentObj.tag)
+            if (!node) node = document.createElement(componentObj.tagName)
             Object.keys(componentObj.attributes).forEach(attribute => node[attribute] = componentObj.attributes[attribute])
             children.forEach(childObj => node.appendChild(childObj))
 
