@@ -44,17 +44,17 @@
     </template>
 
     <script>
-        function DOMeBuilder(componentObj, parents) {
+        function DOMeBuilder(componentObj, parents, DOM) {
             // recursively parse DOMeTree, adding current component to parents argument
-            const children = componentObj.children.map(childObj => childObj ? DOMeBuilder(childObj, [...parents, componentObj]) : undefined)
+            const children = componentObj.children.map(childObj => childObj ? DOMeBuilder(childObj, [...parents, componentObj], DOM) : undefined)
 
             // evaluate if node exists in DOM and retrieve if so (avoid creating duplicates of root elements or all elements in page hydration)
             const nodePath = `/${parents.map(parent => parent.tagName).join("/")}/${componentObj.tagName}`
-            const nodeEval = document.evaluate(nodePath, document, null, XPathResult.ANY_TYPE, null)
+            const nodeEval = DOM.evaluate(nodePath, DOM, null, XPathResult.ANY_TYPE, null)
 
             // create node if necessary, check/update attributes and append children
             let node = nodeEval.iterateNext()
-            if (!node) node = document.createElement(componentObj.tagName)
+            if (!node) node = DOM.createElement(componentObj.tagName)
             Object.keys(componentObj.attributes).forEach(attribute => node[attribute] = componentObj.attributes[attribute])
             children.forEach(childObj => node.appendChild(childObj))
 
@@ -62,9 +62,9 @@
             return node
         }
 
-        function DOMeSetupComponents() {
+        function DOMeSetupComponents(DOM) {
             // get all DOMe component templates from HTML
-            const domeComponents = Array.from(document.getElementsByTagName("template"))
+            const domeComponents = Array.from(DOM.getElementsByTagName("template"))
                 .filter(el => {
                     const dataset = JSON.parse(JSON.stringify(el.dataset))
                     return dataset.domeComponent === "true"
@@ -76,7 +76,7 @@
                     class extends HTMLElement {
                         constructor() {
                         super();
-                        let template = document.getElementById(component.id);
+                        let template = DOM.getElementById(component.id);
                         let templateContent = template.content;
 
                         const shadowRoot = this.attachShadow({mode: 'closed'})
@@ -87,14 +87,14 @@
             })
         }
 
-        async function DOMe(DOMeJSONPath) {
-            DOMeSetupComponents()
+        async function DOMe(DOMeJSONPath, DOM) {
+            DOMeSetupComponents(DOM)
 
             let DOMeJSON = await fetch(DOMeJSONPath).then(res => res.json())
-            DOMeBuilder(DOMeJSON, [])
+            DOMeBuilder(DOMeJSON, [], DOM)
         }
 
-        DOMe("/index.json")
+        DOMe("/index.json", document)
     </script>
 </body>
 </html>
