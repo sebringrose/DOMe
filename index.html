@@ -8,6 +8,12 @@
 </head>
 <body>
     <template id="test-component" data-dome-component="true">
+        <style>
+            * {
+                all: initial
+            }
+        </style>
+
         <h1>I'm the test component</h1>
         <slot name="test-slot">My default text</slot>
     </template>
