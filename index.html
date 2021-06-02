@@ -33,7 +33,7 @@
             let children = componentObj.children.map(childObj => childObj ? DOMeBuilder(childObj, [...parents, componentObj]) : undefined)
 
             // create node (if doesn't already exist) and append children from previous iterations
-            let nodeEval = document.evaluate(`/${parents.map(parent => parent.tag).join("/")}`, document, null, XPathResult.ANY_TYPE, null)
+            let nodeEval = document.evaluate(`/${parents.map(parent => parent.tag).join("/")}/${componentObj.tag}`, document, null, XPathResult.ANY_TYPE, null)
             console.log(componentObj)
             console.log(nodeEval)
 
@@ -74,11 +74,11 @@
             })
         }
 
-        async function DOMe(domeFilePath) {
+        async function DOMe(DOMeJSONPath) {
             DOMeSetupComponents()
 
-            let pageJSON = await fetch(domeFilePath).then(res => res.json())
-            DOMeBuilder(pageJSON)
+            let DOMeJSON = await fetch(DOMeJSONPath).then(res => res.json())
+            DOMeBuilder(DOMeJSON, [])
         }
 
         DOMe("/index.json")
