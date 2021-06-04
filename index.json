@@ -30,7 +30,7 @@
                                     "tagName": "P",
                                     "attributes": {
                                         "slot": "test-slot",
-                                        "textContent": "Poopy McPoopy!"
+                                        "textContent": "I've been inserted by DOMe!"
                                     },
                                     "children": []
                                 }
