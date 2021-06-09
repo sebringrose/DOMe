@@ -1,0 +1,23 @@
+
+<html>
+    <body>
+        <template id="layout-component">
+            <style>
+                * {
+                    color: red;
+                }
+            </style>
+        
+            <header>
+                <slot name="header-slot">Header slot</slot>
+            </header>
+            <main>
+                <slot name="main-slot">Main slot</slot>
+            </main>
+        
+            <script>
+                console.log("I (the layout component) have been attached to the DOM!")
+            </script>
+        </template>
+    </body>
+</html>

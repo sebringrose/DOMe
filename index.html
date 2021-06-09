@@ -4,97 +4,19 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>DOMe</title>
 </head>
+
 <body>
-    <template id="test-component" data-dome-component="true">
-        <style>
-            :host {
-                all: initial;
-            }
-        </style>
+    <!-- DOMe scripts run before body content - they attach event listeners for later fcns -->
+    <!-- templates are added before this script so they are declared before reference -->
+    <script src="./DOMe.js"></script>
 
-        <h1>I'm the test component</h1>
-        <slot name="test-slot">My default text</slot>
-    </template>
-
-    <template id="nav-component" data-dome-component="true">
-        <nav>
-            <slot name="nav-links-slot">No nav links provided....</slot>
-        </nav>
-    </template>
-
-    <template id="layout-component" data-dome-component="true">
-        <style>
-            * {
-                color: red;
-            }
-        </style>
-
-        <header>
-            <slot name="header-slot">Header slot</slot>
-        </header>
-        <main>
-            <slot name="main-slot">Main slot</slot>
-        </main>
-
-        <script>
-            console.log("I (the layout component) have been attached to the DOM!")
-        </script>
-    </template>
-
-    <script>
-        function DOMeBuilder(componentObj, parents, DOM) {
-            // recursively parse DOMeTree, adding current component to parents argument
-            const children = componentObj.children.map(childObj => childObj ? DOMeBuilder(childObj, [...parents, componentObj], DOM) : undefined)
-
-            // evaluate if node exists in DOM and retrieve if so (avoid creating duplicates of root elements or all elements in page hydration)
-            const nodePath = `/${parents.map(parent => parent.tagName).join("/")}/${componentObj.tagName}`
-            const nodeEval = DOM.evaluate(nodePath, DOM, null, XPathResult.ANY_TYPE, null)
-
-            // create node if necessary, check/update attributes and append children
-            let node = nodeEval.iterateNext()
-            if (!node) node = DOM.createElement(componentObj.tagName)
-            Object.keys(componentObj.attributes).forEach(attribute => node[attribute] = componentObj.attributes[attribute])
-            children.forEach(childObj => node.appendChild(childObj))
-
-            // this is crucial for the recursion process but nice to have in general too ^^
-            return node
-        }
-
-        function DOMeSetupComponents(DOM) {
-            // get all DOMe component templates from HTML
-            const domeComponents = Array.from(DOM.getElementsByTagName("template"))
-                .filter(el => {
-                    const dataset = JSON.parse(JSON.stringify(el.dataset))
-                    return dataset.domeComponent === "true"
-                })
-
-            // create custom element for each component using shadow DOM
-            domeComponents.forEach(component => {
-                customElements.define(component.id,
-                    class extends HTMLElement {
-                        constructor() {
-                        super();
-                        let template = DOM.getElementById(component.id);
-                        let templateContent = template.content;
-
-                        const shadowRoot = this.attachShadow({mode: 'closed'})
-                            .appendChild(templateContent.cloneNode(true));
-                        }
-                    }
-                )
-            })
-        }
-
-        async function DOMe(DOMeJSONPath, DOM) {
-            DOMeSetupComponents(DOM)
-
-            let DOMeJSON = await fetch(DOMeJSONPath).then(res => res.json())
-            DOMeBuilder(DOMeJSON, [], DOM)
-        }
-
-        DOMe("/index.json", document)
-    </script>
+    <layout-component data-dome-component>
+        <nav-component slot="header-slot" data-dome-component></nav-component>
+        <test-component slot="main-slot" data-dome-component>
+            <p slot="test-slot">I've been inserted by DOMe!</p>
+        </test-component>
+    </layout>
 </body>
 </html>
