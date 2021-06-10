@@ -44,25 +44,18 @@ async function DeclareDOMeComponent(tagName, template) {
             super();
             let templateContent = template.content;
 
-            const shadowRoot = this.attachShadow({ mode: 'closed' })
+            const shadowRoot = this.attachShadow({ mode: 'open' })
                 .appendChild(templateContent.cloneNode(true));
             }
         }
     )
 }
 
-async function DOMe(DOM) {
-    DOM.addEventListener('DOMContentLoaded', async (event) => {
-        const externalComponents = await FetchDOMeComponents(DOM)
-        externalComponents.forEach(component => DeclareDOMeComponent(component.tagName, component.template))
-    })
-
+async function DOMeSetup() {
     Array.from(document.getElementsByTagName("template")).forEach(template => {
         console.log(template)
         DeclareDOMeComponent(template.id, template)
     })
-
-    // await DOMeBuilder(DOM.body, [], DOM)
 }
 
-DOMe(document)
+DOMeSetup(document)

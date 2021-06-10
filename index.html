@@ -8,8 +8,59 @@
 </head>
 
 <body>
-    <!-- DOMe scripts run before body content - they attach event listeners for later fcns -->
-    <!-- templates are added before this script so they are declared before reference -->
+    <template id="test-component">
+        <style>
+            :host {
+                all: initial;
+            }
+        </style>
+
+        <h1>I'm the test component</h1>
+        <slot name="test-slot">My default text</slot>
+        <div id="preact-root"></div>
+
+        <script type="module">
+            import { render, html, useState } from './common/scripts/preact.js'
+
+            const App = () => {
+                const [count, setCount] = useState(0)
+
+                return html`
+                    <p>Count is: ${count}</p>
+                    <button onclick=${setCount(count++)}>Increment</button>
+                `
+            }
+
+            render(App, document.querySelector("#preact-root"))
+        </script>
+    </template>
+
+    <template id="layout-component">
+        <style>
+            * {
+                color: red;
+            }
+        </style>
+    
+        <header>
+            <slot name="header-slot">Header slot</slot>
+        </header>
+        <main>
+            <slot name="main-slot">Main slot</slot>
+        </main>
+    
+        <script>
+            console.log("I (the layout component) have been attached to the DOM!")
+        </script>
+    </template>
+
+    <template id="nav-component">
+        <nav>
+            <slot name="nav-links-slot">No nav links provided....</slot>
+        </nav>
+    </template>
+    <!-- DOMe scripts run before body content but after templates -->
+    <!-- they attach event listeners for later fcns -->
     <script src="./DOMe.js"></script>
 
     <layout-component data-dome-component>
